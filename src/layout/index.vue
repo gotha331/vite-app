@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <Menu></Menu>
+    <Menu ref="menus" title="升官发财，名利双收" :data="list" @on-click="getList"></Menu>
     <div class="layout-right">
       <Header></Header>
       <Content></Content>
@@ -13,6 +13,16 @@ import Menu from './Menu/index.vue'
 import Header from './Header/index.vue'
 import Content from './Content/index.vue'
 
+import { reactive,ref } from 'vue'
+const menus = ref(null)
+const list = reactive<number[]>([1, 2, 3])
+
+const getList = (list:number[]) => {
+  console.log(list,"我是子组件传过来的list");
+  console.log(menus.value);
+  
+
+}
 
 </script>
 
@@ -23,8 +33,8 @@ import Content from './Content/index.vue'
   overflow: hidden;
 
   &-right {
-    flex:1;
-    display:flex;
+    flex: 1;
+    display: flex;
     flex-direction: column;
   }
 }
