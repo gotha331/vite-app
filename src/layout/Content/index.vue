@@ -2,6 +2,7 @@
   <div class="content">
     <div class="content-items" :key="item" v-for="item in 30">
       {{ item }}
+      <Card :content="`我是第${item}个item`"></Card>
     </div>
   </div>
 </template>
