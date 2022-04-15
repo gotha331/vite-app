@@ -1,5 +1,10 @@
 <template>
   <div class="content">
+    <teleport to="body">
+      <div class="loading">
+        loading......
+      </div>
+    </teleport>
     <!-- <div class="content-items" :key="item" v-for="item in 30">
       {{ item }}
       <Card :content="`我是第${item}个item`"></Card>
@@ -89,6 +94,7 @@ const toggleTab = (item: Tabs) => {
   margin: 20px;
   border: 1px solid #ccc;
   overflow: auto;
+  position: relative;
 
   &-items {
     padding: 20px;
@@ -109,5 +115,12 @@ const toggleTab = (item: Tabs) => {
       }
     }
   }
+}
+
+.loading {
+  position: absolute;
+  top:10px;
+  right: 10px;
+  background: blue;
 }
 </style>
