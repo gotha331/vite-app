@@ -1,13 +1,55 @@
 <template>
   <div class="content">
-    <div class="content-items" :key="item" v-for="item in 30">
+    <!-- <div class="content-items" :key="item" v-for="item in 30">
       {{ item }}
       <Card :content="`我是第${item}个item`"></Card>
+    </div> -->
+
+    <div class="tab">
+      <div class="tab-item" @click="toggleTab(item)" v-for="item in data" :key="item.name">
+        {{ item.name }}
+      </div>
+      <component :is="currentTab.comName"></component>
+
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { reactive, ref, markRaw} from 'vue'
+import A from './A.vue'
+import B from './B.vue'
+import C from './C.vue'
+
+type Tabs = {
+  name: string,
+  comName: any
+}
+
+type Com = Pick<Tabs, "comName">
+
+const data = reactive<Tabs[]>([
+  {
+    name: '我是A组件',
+    comName: markRaw(A)
+  },
+  {
+    name: '我是B组件',
+    comName: markRaw(B)
+  },
+  {
+    name: '我是C组件',
+    comName: markRaw(C)
+  }
+])
+
+let currentTab = reactive<Com>({
+  comName: data[0].comName
+})
+
+const toggleTab = (item:Tabs) => {
+  currentTab.comName = item.comName
+}
 
 </script>
 
@@ -21,6 +63,21 @@
   &-items {
     padding: 20px;
     border: 1px solid #000;
+  }
+
+  .tab {
+
+    &-item {
+      display: inline-block;
+      border: 1px solid #ccc;
+      margin: 10px;
+      padding: 6px;
+      cursor: pointer;
+
+      &:hover {
+        box-shadow: 2px 2px 4px #999;
+      }
+    }
   }
 }
 </style>
