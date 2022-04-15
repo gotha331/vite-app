@@ -5,16 +5,25 @@
       <Card :content="`我是第${item}个item`"></Card>
     </div> -->
 
+    <!-- 渲染异步组件 -->
+    <Suspense>
+      <template #default>
+        <AsyncPage></AsyncPage>
+      </template>
+
+      <template #fallback>
+        loading......
+      </template>
+    </Suspense>
+
     <div class="tab">
       <div class="tab-item" @click="toggleTab(item)" v-for="item in data" :key="item.name">
         {{ item.name }}
       </div>
       <component :is="currentTab.comName"></component>
-
     </div>
 
     <Dialog>
-
       <template #header>
         我被插入到了具名插槽header
       </template>
@@ -31,11 +40,14 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, markRaw } from 'vue'
+import { reactive, ref, markRaw, defineAsyncComponent } from 'vue'
 import A from './A.vue'
 import B from './B.vue'
 import C from './C.vue'
 import Dialog from '../../components/Dialog/index.vue'
+
+// 引入异步组件
+const AsyncPage = defineAsyncComponent(() => import("../../components/AsyncPage/index.vue"))
 
 let slotName = ref('footer')
 
