@@ -12,14 +12,32 @@
       <component :is="currentTab.comName"></component>
 
     </div>
+
+    <Dialog>
+
+      <template #header>
+        我被插入到了具名插槽header
+      </template>
+      <template #default="{ index, data }">
+        <div>{{ data.name }} --- {{ data.age }} -- {{ index }}</div>
+      </template>
+
+      <!-- 动态插槽 -->
+      <template #[slotName]>
+        <div>我在哪儿啊</div>
+      </template>
+    </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, markRaw} from 'vue'
+import { reactive, ref, markRaw } from 'vue'
 import A from './A.vue'
 import B from './B.vue'
 import C from './C.vue'
+import Dialog from '../../components/Dialog/index.vue'
+
+let slotName = ref('footer')
 
 type Tabs = {
   name: string,
@@ -47,7 +65,7 @@ let currentTab = reactive<Com>({
   comName: data[0].comName
 })
 
-const toggleTab = (item:Tabs) => {
+const toggleTab = (item: Tabs) => {
   currentTab.comName = item.comName
 }
 
