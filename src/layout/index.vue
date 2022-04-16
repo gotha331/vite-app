@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import Menu from './Menu/index.vue'
 import Header from './Header/index.vue'
-import Content from './Content/index6.vue'
+import Content from './Content/index8.vue'
 
 import { reactive,ref } from 'vue'
 const menus = ref(null)
