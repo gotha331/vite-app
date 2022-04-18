@@ -11,6 +11,11 @@
   <div>
     <img id="img" width="300" height="300" src="./assets/test.jpg">
   </div>
+
+  <div>
+    {{ $filters.format("我是渣男") }}
+    {{ $env }}
+  </div>
 </template>
 
 <script setup lang="ts">
