@@ -4,6 +4,8 @@ import mitt from 'mitt'
 import './style/index.scss'
 //引入并注册全局组件
 import Card from './components/Card/index.vue'
+// 引入插件
+import Loading from './components/Loading'
 
 const Mit = mitt()
 
@@ -22,7 +24,11 @@ type Filter = {
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {
     $filters: Filter,
-    $env: string
+    $env: string,
+    $loading: {
+      show: () => void,
+      hide: () => void
+    }
   }
 }
 
@@ -39,4 +45,4 @@ app.config.globalProperties.$filters = {
 
 app.config.globalProperties.$env = 'dev'
 
-app.component('Card', Card).mount('#app')
+app.component('Card', Card).use(Loading).mount('#app')
