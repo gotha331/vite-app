@@ -1,11 +1,47 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import { createPinia, PiniaPluginContext } from 'pinia'
 import mitt from 'mitt'
 import './style/index.scss'
 //引入并注册全局组件
 import Card from './components/Card/index.vue'
 // 引入插件
 import Loading from './components/Loading'
+
+type Options = {
+  key: string
+}
+
+const __piniaKey__: string = 'gotha'
+
+const setStorage = (key: string, value: any) => {
+  sessionStorage.setItem(key, JSON.stringify(value))
+}
+
+const getStorage = (key: string) => {
+  return sessionStorage.getItem(key) ? JSON.parse(sessionStorage.getItem(key) as string) : {}
+}
+
+const piniaPlugin = (options: Options) => {
+  return (context: PiniaPluginContext) => {
+    console.log(context, 'context');
+    const { store } = context
+    const data = getStorage(`${options?.key ?? __piniaKey__}-${store.$id}`)
+    store.$subscribe(() => {
+
+      setStorage(`${options?.key ?? __piniaKey__}-${store.$id}`, toRaw(store.$state))
+    })
+
+    return {
+      ...data
+    }
+  }
+}
+
+const store = createPinia()
+store.use(piniaPlugin({
+  key: 'pinia'
+}))
 
 const Mit = mitt()
 
@@ -45,4 +81,4 @@ app.config.globalProperties.$filters = {
 
 app.config.globalProperties.$env = 'dev'
 
-app.component('Card', Card).use(Loading).mount('#app')
+app.component('Card', Card).use(store).use(Loading).mount('#app')
